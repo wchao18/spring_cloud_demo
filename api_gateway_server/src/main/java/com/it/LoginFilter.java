@@ -22,7 +22,7 @@ public class LoginFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("执行了滤器");
         String token = exchange.getRequest().getQueryParams().getFirst("token");
-        if(StringUtils.isBlank(token)){ 
+        if(StringUtils.isBlank(token)){
             log.info("token is empty");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
