@@ -1,0 +1,24 @@
+server:
+  port: 9011 #端口
+spring:
+  application:
+    name: api-zuul-server #服务名称
+#配置Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/,http://localhost:8000/eureka/
+      registry-fetch-interval-seconds: 5 # 获取服务列表的周期：5s
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+zuul:
+  routes:
+#    service-order: #路由ID可以随便写
+#      path: /order/**
+#      #url: http://127.0.0.1:9002
+#      serviceId : service-order
+    #简化配置如下
+     #如果路由ID和ServiceId一样，如下
+    service-order: /order/**
+    #默认请求路径 /service-order/**
