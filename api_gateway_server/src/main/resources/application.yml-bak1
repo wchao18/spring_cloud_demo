@@ -1,0 +1,43 @@
+server:
+  port: 9021 #端口
+spring:
+  application:
+    name: api-gateway-server #服务名称
+  redis:
+    host: 192.168.13.171
+    port: 6379
+    password: iampassword
+  cloud:
+    gateway:
+      routes:
+      - id: service-order
+        #uri: http://127.0.0.1:9002 #固定ip
+        uri: lb://service-order
+        predicates:
+        #- Path=/order/**  #200
+        - Path=/api/** #404
+        filters:
+        - name: RequestRateLimiter
+          args:
+          # 使用SpEL从容器中获取对象
+           key-resolver: '#{@pathKeyResolver}'
+          # 令牌桶每秒填充平均速率
+           redis-rate-limiter.replenishRate: 1
+           #令牌桶的总容量
+           redis-rate-limiter.burstCapacity: 3
+        - RewritePath=/api/(?<segment>.*), /$\{segment}  #路径重写
+       #同上配置二选一.和rotes同级
+      discovery:
+        locator:
+          enabled: true  #PS:开启根据服务名称自动转发,http://127.0.0.1:9021/service-order/order/buy/1
+          lower-case-service-id: true  #微服务名称小写
+
+#配置Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/,http://localhost:8000/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
