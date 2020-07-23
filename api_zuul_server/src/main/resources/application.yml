@@ -7,7 +7,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:9000/eureka/,http://localhost:8000/eureka/
+      defaultZone: http://localhost:9000/eureka/
       registry-fetch-interval-seconds: 5 # 获取服务列表的周期：5s
   instance:
     prefer-ip-address: true #使用ip地址注册

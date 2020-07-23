@@ -1,6 +1,14 @@
 server:
   port: 9021 #端口
 spring:
+  zipkin:
+    base-url: http://192.168.16.177:9081/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1.0
+
   application:
     name: api-gateway-server #服务名称
   cloud:
@@ -24,8 +32,14 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:9000/eureka/,http://localhost:8000/eureka/
+      defaultZone: http://localhost:9000/eureka/
     registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true #使用ip地址注册
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
+
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG

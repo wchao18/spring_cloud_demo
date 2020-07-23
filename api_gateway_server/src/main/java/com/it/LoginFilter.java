@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
  * @description TODO
  * @date 2020/07/15 16:43
  */
-@Component
+//@Component
 @Slf4j
 public class LoginFilter implements GlobalFilter, Ordered {
     @Override
